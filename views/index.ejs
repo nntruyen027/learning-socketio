@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+
+  <h1>
+    <%= title %>
+  </h1>
+
+
+  <form action="" method="post">
+    <input id="text" type="text" autocomplete="false">
+    <input id="send-btn" type="button" value="Gửi">
+  </form>
+
+  <ul id="message-box"></ul>
+
+
+  <script src="./javascripts/jquery-3.6.4.min.js"></script>
+  <script src="./socket.io/socket.io.js"></script>
+  <script>
+    $(document).ready(function () {
+      var socket = io('localhost:3000');
+
+      $('#send-btn').click(() => {
+        socket.emit('message', $('#text').val())
+        $('#text').val('');
+      })
+
+      socket.on('data message', (data) => {
+        $('#message-box').append($("<li>").text(data))
+        window.scrollTo(0, document.body.scrollHeight);
+      })
+    })
+  </script>
+</body>
+
+</html>
